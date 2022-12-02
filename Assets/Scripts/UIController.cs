@@ -65,8 +65,6 @@ public class UIController : MonoBehaviour
 	public void OnSavePressed()
 	{
 		GameController.Instance.SaveGame();
-		StopAllCoroutines();
-		StartCoroutine(SavedPopUpAnimation(1));
 	}
 
 	public void OnReturnToMenuPressed()
