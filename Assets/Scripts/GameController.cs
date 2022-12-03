@@ -6,6 +6,8 @@ public class GameController : MonoBehaviour
 {
 	public static GameController Instance;
 
+	private const int MAX_BALLS_COUNT = 42;
+
 	public enum GameStates
 	{
 		MainMenu,
@@ -242,7 +244,10 @@ public class GameController : MonoBehaviour
 		int currentCount = balls.Count;
 		for (int i = 0; i < currentCount; i++)
 		{
-			balls[i].Duplicate();
+			if (balls.Count < MAX_BALLS_COUNT)
+			{
+				balls[i].Duplicate();
+			}
 		}
 	}
 

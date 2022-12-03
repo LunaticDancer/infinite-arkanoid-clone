@@ -6,6 +6,7 @@ public class Paddle : MonoBehaviour
 {
     private const float MOVE_LERP_SPEED = 0.8f;
     private const float MAX_PADDLE_SIZE = 15f;
+    private const float PADDLE_SHRINK_RATE = 0.2f;
     private const float GUN_COOLDOWN = 0.5f;
 
     private float gunTimer;         // how long the power up lasts
@@ -70,6 +71,10 @@ public class Paddle : MonoBehaviour
                 Shoot();
                 gunCooldown += GUN_COOLDOWN;
             }
+        }
+        if (width > 2)
+        {
+            Width -= Time.deltaTime * PADDLE_SHRINK_RATE;
         }
     }
 

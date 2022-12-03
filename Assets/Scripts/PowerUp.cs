@@ -50,7 +50,7 @@ public class PowerUp : MonoBehaviour
         AudioController.Instance.PlayPowerUpSound();
         if (heldPower == PowerUps.Widen)
         {
-            paddle.Width += 1f;
+            paddle.Width += 2f;
         }
         else if (heldPower == PowerUps.Duplicate)
         {
