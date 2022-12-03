@@ -7,7 +7,9 @@ public class Paddle : MonoBehaviour
     private const float MOVE_LERP_SPEED = 0.8f;
     private const float MAX_PADDLE_SIZE = 15f;
     private const float PADDLE_SHRINK_RATE = 0.2f;
-    private const float GUN_COOLDOWN = 0.5f;
+    private const float GUN_COOLDOWN_LOW = 1.6f;
+    private const float GUN_COOLDOWN_HIGH = 0.2f;
+    private const float GUN_COOLDOWN_THRESHOLD = 30f;
 
     private float gunTimer;         // how long the power up lasts
     private float gunCooldown;      // time between shots
@@ -69,7 +71,7 @@ public class Paddle : MonoBehaviour
             if (gunCooldown < 0)
             {
                 Shoot();
-                gunCooldown += GUN_COOLDOWN;
+                gunCooldown += Mathf.Lerp(GUN_COOLDOWN_LOW, GUN_COOLDOWN_HIGH, gunTimer / GUN_COOLDOWN_THRESHOLD);
             }
         }
         if (width > 2)
@@ -97,7 +99,8 @@ public class Paddle : MonoBehaviour
 
     private void Shoot()
     {
-        Instantiate(projectilePrefab, transform.position + Vector3.up * 0.3f + Vector3.left * width/2, Quaternion.identity).Init(8);
+        Instantiate(projectilePrefab, transform.position + Vector3.up * 0.3f + Vector3.left * width / 2, Quaternion.identity).Init(8);
+        Instantiate(projectilePrefab, transform.position + Vector3.up * 0.3f, Quaternion.identity).Init(8);
         Instantiate(projectilePrefab, transform.position + Vector3.up * 0.3f + Vector3.right * width/2, Quaternion.identity).Init(8);
     }
 
