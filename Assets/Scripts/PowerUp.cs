@@ -50,7 +50,7 @@ public class PowerUp : MonoBehaviour
         AudioController.Instance.PlayPowerUpSound();
         if (heldPower == PowerUps.Widen)
         {
-            paddle.Width += 2f;
+            paddle.Width += 3f;
         }
         else if (heldPower == PowerUps.Duplicate)
         {
@@ -58,7 +58,7 @@ public class PowerUp : MonoBehaviour
         }
         else if (heldPower == PowerUps.Gun)
         {
-            paddle.GunTimer = 5;
+            paddle.GunTimer = 12;
         }
     }
 }

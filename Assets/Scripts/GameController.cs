@@ -7,7 +7,9 @@ public class GameController : MonoBehaviour
 	public static GameController Instance;
 
 	private const int MAX_BALLS_COUNT = 42;
-	private const float BRICK_SCROLL_SPEED = 0.1f;
+	private const float BRICK_SCROLL_SPEED_MIN = 0.04f;
+	private const float BRICK_SCROLL_SPEED_MAX = 1f;
+	private const int BRICK_SCROLL_SPEED_THRESHOLD = 100;
 
 	public enum GameStates
 	{
@@ -89,7 +91,7 @@ public class GameController : MonoBehaviour
 
 	private void HandleScrollingBricks()
 	{
-		levelGenerator.transform.position += Vector3.down * BRICK_SCROLL_SPEED * Time.deltaTime;
+		levelGenerator.transform.position += Vector3.down * Mathf.Lerp(BRICK_SCROLL_SPEED_MIN, BRICK_SCROLL_SPEED_MAX, (float)newestRow/BRICK_SCROLL_SPEED_THRESHOLD) * Time.deltaTime;
 		while (levelGenerator.transform.position.y + newestRow * levelGenerator.BrickSize.y < 6)
 		{
 			bricks.AddRange(levelGenerator.GenerateRow(newestRow));
@@ -201,7 +203,7 @@ public class GameController : MonoBehaviour
 
 	public void DestroyBrick(Brick target)
 	{
-		if (Random.Range(0, 1f) < Mathf.Lerp(.2f, .1f, newestRow / 100f))
+		if (Random.Range(0, 1f) < Mathf.Lerp(.12f, .06f, newestRow / 50f))
 		{
 			powerUps.Add(Instantiate(powerUpPrefab, target.transform.position, Quaternion.identity));
 		}

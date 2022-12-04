@@ -52,7 +52,7 @@ public class Ball : MonoBehaviour
 
     private void Bounce()
     {
-        rb.velocity = paddle.GetBounceDirection(transform.position) * speed * Mathf.Lerp(1, 3, GameController.Instance.NewestRow/50f);
+        rb.velocity = paddle.GetBounceDirection(transform.position) * speed * Mathf.Lerp(1, 2, GameController.Instance.NewestRow/50f);
     }
 
     public void Duplicate()
@@ -67,7 +67,7 @@ public class Ball : MonoBehaviour
 
     public void Reroute(Vector2 direction)
     {
-        rb.velocity = direction * speed * Mathf.Lerp(1, 3, GameController.Instance.NewestRow / 50f);
+        rb.velocity = direction * speed * Mathf.Lerp(1, 2, GameController.Instance.NewestRow / 50f);
     }
 
 	private void OnCollisionEnter2D(Collision2D collision)

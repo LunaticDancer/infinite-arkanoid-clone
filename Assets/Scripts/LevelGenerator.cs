@@ -16,7 +16,7 @@ public class LevelGenerator : MonoBehaviour
     {
         List<Brick> result = new List<Brick>();
         float perlinModifier = 0.234f;
-        float perlinFlattener = 1f / (rowIndex/5f); // makes multihit blocks rarer in early levels
+        float perlinFlattener = 1f / (rowIndex/5f); // makes multihit blocks rarer in early game
 
         for (int x = 0; x < generationSize.x; x++)
         {
