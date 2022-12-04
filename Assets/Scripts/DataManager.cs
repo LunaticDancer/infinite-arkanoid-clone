@@ -55,15 +55,17 @@ public class DataManager : MonoBehaviour
     {
         public int newestRow;
         public int currentScore;
+        public float brickScrollingPosition;
         public float paddleWidth;
         public float paddleGunTimer;
         public BallData[] balls;
         public BrickData[] bricks;
         public PowerData[] powers;
-        public GameStateData(int row, int score, float width, float gunTimer, BallData[] balls, BrickData[] bricks, PowerData[] powers)
+        public GameStateData(int row, int score, float brickScrolling, float width, float gunTimer, BallData[] balls, BrickData[] bricks, PowerData[] powers)
         {
             newestRow = row;
             currentScore = score;
+            brickScrollingPosition = brickScrolling;
             paddleWidth = width;
             paddleGunTimer = gunTimer;
             this.balls = balls;

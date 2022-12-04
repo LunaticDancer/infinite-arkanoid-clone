@@ -129,6 +129,7 @@ public class GameController : MonoBehaviour
 			paddle.Width = loadedData.paddleWidth;
 			paddle.GunTimer = loadedData.paddleGunTimer;
 			CurrentScore = loadedData.currentScore;
+			levelGenerator.transform.position = new Vector3(0, loadedData.brickScrollingPosition);
 
 			powerUps = new List<PowerUp>();
 			balls = new List<Ball>();
@@ -178,7 +179,7 @@ public class GameController : MonoBehaviour
 			powersData[i] = powerUps[i].CovertToData();
 		}
 
-		DataManager.GameStateData saveData = new DataManager.GameStateData(newestRow, currentScore, paddle.Width, paddle.GunTimer, 
+		DataManager.GameStateData saveData = new DataManager.GameStateData(newestRow, currentScore, levelGenerator.transform.position.y, paddle.Width, paddle.GunTimer, 
 			ballsData, bricksData, powersData);
 		DataManager.Instance.SaveGameSession(saveData);
 		DataManager.ProfileData data = new DataManager.ProfileData(highestScore, true);
