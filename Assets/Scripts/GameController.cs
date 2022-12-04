@@ -84,6 +84,7 @@ public class GameController : MonoBehaviour
 			else if (currentState == GameStates.ActiveGameplay)
 			{
 				UIController.Instance.ShowPauseMenu();
+				currentState = GameStates.PausedGameplay;
 				PauseGame();
 			}
 		}
@@ -102,6 +103,7 @@ public class GameController : MonoBehaviour
 	public void InitializeGameplay()
 	{
 		newestRow = 0;
+		UnpauseGame();
 		currentState = GameStates.ActiveGameplay;
 		gameAreaCore.SetActive(true);
 		levelGenerator.transform.position = new Vector3(0, 3.5f);
@@ -191,13 +193,11 @@ public class GameController : MonoBehaviour
 
 	public void PauseGame()
 	{
-		currentState = GameStates.PausedGameplay;
 		Time.timeScale = 0;
 	}
 
 	public void UnpauseGame()
 	{
-		currentState = GameStates.ActiveGameplay;
 		Time.timeScale = 1;
 	}
 
@@ -222,7 +222,7 @@ public class GameController : MonoBehaviour
 
 	}
 
-	private void EndGame()
+	public void EndGame()
 	{
 		UIController.Instance.ShowGameOver();
 		currentState = GameStates.GameOver;
@@ -234,6 +234,7 @@ public class GameController : MonoBehaviour
 		}
 		DataManager.ProfileData data = new DataManager.ProfileData(highestScore, false);
 		DataManager.Instance.SaveProfile(data);
+		PauseGame();
 	}
 
 	public void DuplicateBalls()

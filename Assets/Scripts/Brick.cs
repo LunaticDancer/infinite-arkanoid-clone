@@ -43,15 +43,22 @@ public class Brick : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-        GameController.Instance.CurrentScore += GameController.Instance.NewestRow;
-        AudioController.Instance.PlayRandomDestroySound();
-        if (currentState > 0)
+        if (collision.gameObject.tag == "Paddle")
         {
-            ChangeState(currentState - 1);
+            GameController.Instance.EndGame();
         }
         else
         {
-            GameController.Instance.DestroyBrick(this);
+            GameController.Instance.CurrentScore += GameController.Instance.NewestRow;
+            AudioController.Instance.PlayRandomDestroySound();
+            if (currentState > 0)
+            {
+                ChangeState(currentState - 1);
+            }
+            else
+            {
+                GameController.Instance.DestroyBrick(this);
+            }
         }
 	}
 }
