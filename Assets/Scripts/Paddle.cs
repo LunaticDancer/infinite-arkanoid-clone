@@ -5,11 +5,11 @@ using UnityEngine;
 public class Paddle : MonoBehaviour
 {
     private const float MOVE_LERP_SPEED = 0.8f;
-    private const float MAX_PADDLE_SIZE = 15f;
-    private const float PADDLE_SHRINK_RATE = 0.2f;
-    private const float GUN_COOLDOWN_LOW = 1.6f;
-    private const float GUN_COOLDOWN_HIGH = 0.2f;
-    private const float GUN_COOLDOWN_THRESHOLD = 30f;
+    private const float MAX_PADDLE_SIZE = 11f;
+    private const float PADDLE_SHRINK_RATE = 0.1f;
+    private const float GUN_COOLDOWN_LOW = 1.2f;
+    private const float GUN_COOLDOWN_HIGH = 0.1f;
+    private const float GUN_COOLDOWN_THRESHOLD = 50f;
 
     private float gunTimer;         // how long the power up lasts
     private float gunCooldown;      // time between shots

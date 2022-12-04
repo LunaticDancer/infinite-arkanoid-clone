@@ -53,19 +53,19 @@ public class DataManager : MonoBehaviour
     [System.Serializable]
     public class GameStateData
     {
-        public int currentLevel;
+        public int newestRow;
         public int currentScore;
-        public int maxBrickCount;
+        public float brickScrollingPosition;
         public float paddleWidth;
         public float paddleGunTimer;
         public BallData[] balls;
         public BrickData[] bricks;
         public PowerData[] powers;
-        public GameStateData(int level, int score, int maxBrick, float width, float gunTimer, BallData[] balls, BrickData[] bricks, PowerData[] powers)
+        public GameStateData(int row, int score, float brickScrolling, float width, float gunTimer, BallData[] balls, BrickData[] bricks, PowerData[] powers)
         {
-            currentLevel = level;
+            newestRow = row;
             currentScore = score;
-            maxBrickCount = maxBrick;
+            brickScrollingPosition = brickScrolling;
             paddleWidth = width;
             paddleGunTimer = gunTimer;
             this.balls = balls;
