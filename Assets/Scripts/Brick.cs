@@ -43,7 +43,7 @@ public class Brick : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-        GameController.Instance.CurrentScore += 10 * GameController.Instance.CurrentLevel;
+        GameController.Instance.CurrentScore += GameController.Instance.NewestRow;
         AudioController.Instance.PlayRandomDestroySound();
         if (currentState > 0)
         {

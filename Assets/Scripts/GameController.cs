@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
 	public static GameController Instance;
 
 	private const int MAX_BALLS_COUNT = 42;
+	private const float BRICK_SCROLL_SPEED = 0.1f;
 
 	public enum GameStates
 	{
@@ -24,8 +25,9 @@ public class GameController : MonoBehaviour
 	private GameStates currentState = GameStates.MainMenu;
 	private int currentScore = 0;
 	private int highestScore = 0;
-	private int currentLevel = 1;
-	private int maxBrickCount = 1;
+
+	private int newestRow = 1;
+
 	// this section could be improved with pooling
 	List<Ball> balls = null;
 	List<Brick> bricks = null;
@@ -39,7 +41,7 @@ public class GameController : MonoBehaviour
 			UIController.Instance.SetScore(currentScore);
 		}
 	}
-	public int CurrentLevel { get => currentLevel; }
+	public int NewestRow { get => newestRow; }
 
 	private void Awake()
 	{
@@ -66,6 +68,11 @@ public class GameController : MonoBehaviour
 				DeinitializeGameplay();
 			}
 		}
+		else if (currentState == GameStates.ActiveGameplay)
+		{
+			HandleScrollingBricks();
+		}
+
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			if (currentState == GameStates.PausedGameplay)
@@ -80,13 +87,23 @@ public class GameController : MonoBehaviour
 		}
 	}
 
+	private void HandleScrollingBricks()
+	{
+		levelGenerator.transform.position += Vector3.down * BRICK_SCROLL_SPEED * Time.deltaTime;
+		while (levelGenerator.transform.position.y + newestRow * levelGenerator.BrickSize.y < 6)
+		{
+			bricks.AddRange(levelGenerator.GenerateRow(newestRow));
+			newestRow++;
+		}
+	}
+
 	public void InitializeGameplay()
 	{
-		currentLevel = 1;
+		newestRow = 0;
 		currentState = GameStates.ActiveGameplay;
 		gameAreaCore.SetActive(true);
-		bricks = LevelGenerator.GenerateLevel(currentLevel);
-		maxBrickCount = bricks.Count;
+		levelGenerator.transform.position = new Vector3(0, 3.5f);
+		bricks = new List<Brick>();
 		paddle.Width = 2;
 		paddle.GunTimer = 0;
 		CurrentScore = 0;
@@ -101,10 +118,9 @@ public class GameController : MonoBehaviour
 		DataManager.GameStateData loadedData = DataManager.Instance.LoadGameSession();
 		if (loadedData != null)
 		{
-			currentLevel = loadedData.currentLevel;
+			newestRow = loadedData.newestRow;
 			currentState = GameStates.ActiveGameplay;
 			gameAreaCore.SetActive(true);
-			maxBrickCount = loadedData.maxBrickCount;
 			UIController.Instance.SetHiScore(highestScore);
 			paddle.Width = loadedData.paddleWidth;
 			paddle.GunTimer = loadedData.paddleGunTimer;
@@ -158,7 +174,7 @@ public class GameController : MonoBehaviour
 			powersData[i] = powerUps[i].CovertToData();
 		}
 
-		DataManager.GameStateData saveData = new DataManager.GameStateData(currentLevel, currentScore, maxBrickCount, paddle.Width, paddle.GunTimer, 
+		DataManager.GameStateData saveData = new DataManager.GameStateData(newestRow, currentScore, paddle.Width, paddle.GunTimer, 
 			ballsData, bricksData, powersData);
 		DataManager.Instance.SaveGameSession(saveData);
 		DataManager.ProfileData data = new DataManager.ProfileData(highestScore, true);
@@ -185,33 +201,12 @@ public class GameController : MonoBehaviour
 
 	public void DestroyBrick(Brick target)
 	{
-		if (Random.Range(0, 1f) < Mathf.Lerp(.6f, .2f, bricks.Count / (float)maxBrickCount))
+		if (Random.Range(0, 1f) < Mathf.Lerp(.2f, .1f, newestRow / 100f))
 		{
 			powerUps.Add(Instantiate(powerUpPrefab, target.transform.position, Quaternion.identity));
 		}
 		bricks.Remove(target);
 		Destroy(target.gameObject);
-		if (bricks.Count < 1)
-		{
-			AdvanceLevel();
-		}
-	}
-
-	public void AdvanceLevel()
-	{
-		currentLevel++;
-		foreach (Ball ball in balls)
-		{
-			Destroy(ball.gameObject);
-		}
-		ClearProjectiles();
-		ClearPowerUps();
-		balls = new List<Ball>();
-		InitBall();
-		paddle.Width = 2;
-		paddle.GunTimer = 0;
-		bricks = LevelGenerator.GenerateLevel(currentLevel);
-		maxBrickCount = bricks.Count;
 	}
 
 	public void DestroyBall(Ball target)
